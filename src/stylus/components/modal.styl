@@ -1,0 +1,181 @@
+@import '../base'
+
+.modal-mask
+  position fixed
+  z-index 9998
+  top 0
+  left 0
+  width 100%
+  height 100%
+  background-color rgba(0, 0, 0, .5)
+  display table
+  transition opacity .5s ease
+
+.modal-wrapper
+  display table-cell
+  vertical-align middle
+
+.modal-container
+  position relative
+  margin 0 100px
+  transition all .5s ease
+
+.modal-close
+  position absolute
+  right 120px
+  top -130px
+  i
+    font-size 90px !important
+    color #858585
+
+.modal-content
+  position relative
+  width 100%
+  height 100%
+  max-height 880px
+
+.content-bg
+  width 100%
+  height 100%
+  img
+    display block
+    margin 0 auto
+    max-width 880px
+    max-height 880px
+
+//result头像
+.user-icon
+  position absolute
+  width 180px
+  height 180px
+  border-radius 50%
+  border 10px solid #fff
+  top 130px
+  left 50%
+  transform translate(-50%, -50%)
+  -webkit-transform translate(-50%, -50%)
+  img
+    height 180px
+    width 180px
+    border-radius 50%
+
+//抢按钮
+.button-circle
+  position absolute
+  background-color #ffff00
+  width 135px
+  height 135px
+  line-height 135px
+  border-radius 50%
+  bottom 91px
+  left 50%
+  transform translate(-50%, -50%)
+  -webkit-transform translate(-50%, -50%)
+  text-align center
+  font-size 70px
+  color #ff4449
+  span
+    height 135px
+    line-height 135px
+
+//分享按钮
+.button-share
+  position absolute
+  background-color #ffbd26
+  width 450px
+  height 90px
+  line-height 90px
+  border-radius 100px
+  bottom 60px
+  left 50%
+  transform translate(-50%, -50%)
+  -webkit-transform translate(-50%, -50%)
+  text-align center
+  font-size 44px
+  color #d02e33
+  &:hover
+    background-color #ffbd26 * 0.9
+    span
+      color #d02e33 * 0.9
+  &:active
+    background-color #ffbd26 * 0.8
+    border 1px solid #ffbd26 * 0.8
+    span
+      color #d02e33 * 0.8
+  span
+    height 90px
+    line-height 90px
+
+//result获取获得红包
+.user-result-get
+  position absolute
+  width 100%
+  height auto
+  top 345px
+  left 50%
+  transform translate(-50%, -50%)
+  -webkit-transform translate(-50%, -50%)
+  text-align center
+  &-top
+    font-weight bold
+    padding 10px
+    span
+      &:nth-child(1)
+        font-size 40px
+        color #000
+        margin 0 20px
+      &:nth-child(2)
+        font-size 50px
+        color #f12528
+  &-bottom
+    padding 10px
+    span
+      &:nth-child(1),&:nth-child(3)
+        font-size 40px
+        color #000
+        font-weight bold
+      &:nth-child(2)
+        font-size 68px
+        color #ff4201
+        padding 0 30px
+
+//已经获得红包
+.user-result-got
+  position absolute
+  width 100%
+  height auto
+  top 345px
+  left 50%
+  transform translate(-50%, -50%)
+  -webkit-transform translate(-50%, -50%)
+  text-align center
+  &-top
+    font-weight bold
+    padding 10px
+    span
+      &:nth-child(1)
+        font-size 40px
+        color #000
+        margin 0 20px
+      &:nth-child(2)
+        font-size 50px
+        color #f12528
+  &-bottom
+    padding 10px
+    span
+      &:nth-child(1),&:nth-child(3)
+        font-size 40px
+        color #000
+        font-weight bold
+      &:nth-child(2)
+        font-size 68px
+        color #ff4201
+        padding 0 30px
+
+.modal-enter
+  opacity 0
+.modal-leave-active
+  opacity 0
+.modal-enter .modal-container,
+.modal-leave-active .modal-container
+  transform scale(1.1)
