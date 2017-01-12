@@ -1,8 +1,14 @@
 export default {
-  getArticleList(state) {
-    return state.articleList
+  getRedpackConfig(state) {
+    return state.redpacketConfig
   },
-  getArticle(state) {
-    return state.article
+  getUserInfo(state) {
+    return state.userInfo
+  },
+  getRedpacket(state) {
+    return state.redpack
+  },
+  getHasRedpack(state) {
+    return state.hasRedpack
   },
 }

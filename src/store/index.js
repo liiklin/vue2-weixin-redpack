@@ -7,8 +7,10 @@ import getters from './getters'
 Vue.use(Vuex)
 
 const state = {
-  articleList:[],
-  article:{}
+  redpacketConfig:{},
+  userInfo:{},
+  redpack:{},
+  hasRedpack:false,//是否已经获取红包
 }
 
 export default new Vuex.Store({

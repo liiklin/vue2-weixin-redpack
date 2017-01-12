@@ -2,27 +2,53 @@ import * as types from './mutation-types'
 import * as api from './api'
 
 export default {
-  getArticleList({
+  getUserInfo({
     commit
+  }, {
+    wxId
   }) {
-    return api.fetchArticleList()
+    return api.fetchUserInfo(wxId)
       .then(body => Promise.resolve(body))
-      .then(articleList => {
-        commit(types.SET_ARTICLE_LIST, {
-          articleList
+      .then(userInfo => {
+        commit(types.SET_USER_INFO, {
+          userInfo
         })
       })
   },
-  getArticle({
+  getRedpacket({
     commit
   }, {
-    id
+    wxId
   }) {
-    return api.fetchArticle(id)
+    return api.postRedpack(wxId)
       .then(body => Promise.resolve(body))
-      .then(article => {
-        commit(types.SET_ARTICLE, {
-          article
+      .then(redpack => {
+        commit(types.SET_REDPACKET, {
+          redpack
+        })
+      })
+  },
+  getHasRedpack({
+    commit
+  }, {
+    wxId
+  }) {
+    return api.fetchHasRedpack(wxId)
+      .then(body => Promise.resolve(body))
+      .then(hasRedpack => {
+        commit(types.SET_HAS_REDPACK, {
+          hasRedpack
+        })
+      })
+  },
+  getRedpacketConfig({
+    commit
+  }) {
+    return api.fetchRedpackConfig()
+      .then(body => Promise.resolve(body))
+      .then(redpacketConfig => {
+        commit(types.SET_REDPACKET_CONFING, {
+          redpacketConfig
         })
       })
   },

@@ -34,14 +34,26 @@ function post(child, data) {
   })
 }
 
-export function fetchArticleList() {
-  return fetch(`WxBus/getArticleList`).then(response => {
+export function fetchRedpackConfig() {
+  return fetch(`WxBus/getRedpackConfig`).then(response => {
     return response.data
   })
 }
 
-export function fetchArticle(id) {
-  return fetch(`WxBus/getArticle?id=${id}`).then(response => {
-    return response.data
+export function fetchHasRedpack(wxId) {
+  return fetch(`WxBus/hasRedpack?wxId=${wxId}`).then(response => {
+    return response.success
+  })
+}
+
+export function postRedpack(wxId) {
+  return fetch(`WxBus/getRedpack?wxId=${wxId}`).then(response => {
+    return response
+  })
+}
+
+export function fetchUserInfo(wxId) {
+  return fetch(`WxBus/getUserinfo?wxId=${wxId}`).then(response => {
+    return response.data.user
   })
 }

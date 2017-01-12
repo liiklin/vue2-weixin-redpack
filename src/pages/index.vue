@@ -17,22 +17,27 @@ div
 		#img
 			img(:src="article.img")
 		#description
-			span(v-text="article.content")
+			span(v-html="redpacketConfig.memo")
 	#footer
-		.button(@click="getRedpacket")
+		.button(@click="doGetRedpacket")
 			span 一起去抢
-	Modal(v-show="showRedPackModal" @click="closeRedPack")
+	Modal(v-show="showRedPackModal"
+		v-bind:user-info="userInfo"
+		v-bind:hasRedpack="!hasRedpack"
+		v-bind:cashNum="cashNum"
+			@click="closeRedPack"
+		)
 		span(slot="button" @click="openRedpacket") 抢
 	Redpack(v-show="showRedPackResultGetModal"
 		v-bind:user-info="userInfo"
-		v-bind:hasGot="!hasGot"
+		v-bind:hasRedpack="!hasRedpack"
 		v-bind:cashNum="cashNum"
 		@click="closeRedPackGetResult"
 		)
 		span(slot="share" @click="share") 邀请好友一起抢
 	Redpack(v-show="showRedPackResultGotModal"
 		v-bind:user-info="userInfo"
-		v-bind:hasGot="hasGot"
+		v-bind:hasRedpack="hasRedpack"
 		v-bind:cashNum="cashNum"
 		@click="closeRedPackGotResult"
 		)
@@ -48,8 +53,22 @@ import {
 import Modal from '../components/modal'
 import Redpack from '../components/redpack'
 
-async function fetchArticleList(store) {
-	return store.dispatch('getArticleList')
+const queryString = require('query-string')
+
+async function fetchUserInfo(store, wxId) {
+	return store.dispatch('getUserInfo', {
+		wxId
+	})
+}
+
+async function fetchRepackConfig(store) {
+	return store.dispatch('getRedpacketConfig')
+}
+
+async function fetchHasRepack(store, wxId) {
+	return store.dispatch('getHasRedpack', {
+		wxId
+	})
 }
 
 export default {
@@ -68,30 +87,61 @@ export default {
 				content: "文章正文",
 				img: "",
 			},
-			userInfo: {
-				"name": "创业小秘",
-				"wxPhoto": "http://wx.qlogo.cn/mmopen/D9auvJbDV7eMu4NNibU4o3DPlVI9wZnt1cGr5FGFho6tHY1OYBQ7q5hOR0gyLibKRZdq41DiaPynr5VsuJS2hO32v68yu5fmmSK/0"
-			},
-			cashNum: "6.80",
+			userInfo: {},
+			redpacketConfig: {},
+			cashNum: '',
 			showRedPackModal: false,
 			showRedPackResultGetModal: false,
 			showRedPackResultGotModal: false,
 			status: 0,
-			hasGot: false
+			hasRedpack: false,
+			canLoad: true,
 		}
 	},
 	computed: {
 		...mapGetters([
-			'getArticleList',
+			'getUserInfo',
+			'getRedpacket',
+			'getHasRedpack',
+			'getRedpacketConfig',
+		]),
+		...mapActions([
+
 		])
 	},
 	methods: {
-		openRedpacket() {
-			this.closeRedPack()
-			this.showRedPackResultGot()
+		async openRedpacket() {
+			let self = this,
+				wxId = self.userInfo.id
+
+			if (!self.canLoad) {
+				return
+			}
+			self.canLoad = false
+
+			try {
+				await self.$store.dispatch('getRedpacket', {
+					wxId
+				})
+				let result = self.$store.getters.getRedpacket,
+					status = result.success
+				if (status) { // 获得红包
+					self.cashNum = `${result.data.total_amount}`
+					self.hasRedpack = true
+					self.closeRedPack()
+					self.showRedPackResultGet()
+				} else {
+					self.canLoad = true
+					alert(result.data.return_msg || result.msg)
+				}
+			} catch (e) {
+				self.canLoad = true
+				console.log(`e=>>${e}`)
+				alert('网络似乎有点问题，请重新再试')
+			}
 		},
-		getRedpacket() {
-			if (this.hasGot) {
+		doGetRedpacket() {
+			if (this.hasRedpack) {
 				this.showRedPackResultGot()
 			} else {
 				this.showRedPack()
@@ -119,8 +169,23 @@ export default {
 			console.log('share')
 		}
 	},
+	computed: {},
 	async mounted() {
-		console.log('mounted')
+
+	},
+	async beforeMount() {
+		let self = this,
+			search = queryString.parse(location.search),
+			wxId = self.$route.query.id || search.id,
+			paperId = self.$route.query.paperId
+
+		await fetchUserInfo(self.$store, wxId)
+		await fetchHasRepack(self.$store, wxId)
+		await fetchRepackConfig(self.$store)
+
+		self.hasRedpack = self.$store.getters.getHasRedpack
+		self.userInfo = self.$store.getters.getUserInfo
+		self.redpacketConfig = self.$store.getters.getRedpackConfig
 	}
 }
 </script>
