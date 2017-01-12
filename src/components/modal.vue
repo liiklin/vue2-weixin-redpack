@@ -8,7 +8,7 @@ transition(name="modal")
 						//-slot(name="close") &nbsp;
 				.modal-content
 					.content-bg
-						img(src="~assets/redpack01.png")
+						img(src="~assets/redpack011.png")
 					.user-icon
 						img(:src="userInfo.wxPhoto")
 					.button-circle

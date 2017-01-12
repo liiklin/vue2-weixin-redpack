@@ -15,10 +15,12 @@ div
 		div
 	#body
 		#img
-			img(:src="article.img")
+			img(src="~assets/bg.png")
 		#description
 			span(v-html="redpacketConfig.memo")
 	#footer
+		img(src="~assets/detail-footer.png")
+	#fixed-bottom
 		.button(@click="doGetRedpacket")
 			span 一起去抢
 	Modal(v-show="showRedPackModal"
@@ -32,6 +34,7 @@ div
 		v-bind:user-info="userInfo"
 		v-bind:hasRedpack="!hasRedpack"
 		v-bind:cashNum="cashNum"
+		v-bind:robbed="false"
 		@click="closeRedPackGetResult"
 		)
 		span(slot="share" @click="share") 邀请好友一起抢
@@ -39,6 +42,7 @@ div
 		v-bind:user-info="userInfo"
 		v-bind:hasRedpack="hasRedpack"
 		v-bind:cashNum="cashNum"
+		v-bind:robbed="robbed"
 		@click="closeRedPackGotResult"
 		)
 		span(slot="share" @click="share") 邀请好友一起抢
@@ -51,6 +55,7 @@ import {
 } from 'vuex'
 
 import Modal from '../components/modal'
+import Modalx from '../components/modalx'
 import Redpack from '../components/redpack'
 
 const queryString = require('query-string')
@@ -75,6 +80,7 @@ export default {
 	components: {
 		Modal,
 		Redpack,
+		Modalx,
 	},
 	data() {
 		return {
@@ -85,16 +91,17 @@ export default {
 				wxmp: "七弦琴资讯",
 				num: 30,
 				content: "文章正文",
-				img: "",
+				img: "~assets/bg.png",
 			},
 			userInfo: {},
 			redpacketConfig: {},
-			cashNum: '',
+			cashNum: '6.80',
 			showRedPackModal: false,
 			showRedPackResultGetModal: false,
 			showRedPackResultGotModal: false,
 			status: 0,
 			hasRedpack: false,
+			robbed: false, //抢光红包
 			canLoad: true,
 		}
 	},
@@ -130,14 +137,14 @@ export default {
 					self.hasRedpack = true
 					self.closeRedPack()
 					self.showRedPackResultGet()
-				} else {
+				} else { // 抛出异常
 					self.canLoad = true
 					alert(result.data.return_msg || result.msg)
 				}
 			} catch (e) {
 				self.canLoad = true
 				console.log(`e=>>${e}`)
-				alert('网络似乎有点问题，请重新再试')
+				alert('网络似乎有点问题，请重新再试。')
 			}
 		},
 		doGetRedpacket() {

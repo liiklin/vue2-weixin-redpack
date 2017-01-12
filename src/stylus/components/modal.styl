@@ -7,13 +7,14 @@
   left 0
   width 100%
   height 100%
-  background-color rgba(0, 0, 0, .5)
-  display table
+  background-color rgba(0, 0, 0, .3)
+  // display table
   transition opacity .5s ease
 
 .modal-wrapper
-  display table-cell
-  vertical-align middle
+  // display table-cell
+  // vertical-align middle
+  margin-top 280px
 
 .modal-container
   position relative
@@ -26,13 +27,13 @@
   top -130px
   i
     font-size 90px !important
-    color #858585
+    color rgba(0,0,0,.3)
 
 .modal-content
   position relative
   width 100%
   height 100%
-  max-height 880px
+  // max-height 880px
 
 .content-bg
   width 100%
@@ -41,7 +42,7 @@
     display block
     margin 0 auto
     max-width 880px
-    max-height 880px
+    // max-height 880px
 
 //result头像
 .user-icon
@@ -94,12 +95,12 @@
   font-size 44px
   color #d02e33
   &:hover
-    background-color #ffbd26 * 0.9
+    background-color #ffbd26 * 1.1
     span
       color #d02e33 * 0.9
   &:active
-    background-color #ffbd26 * 0.8
-    border 1px solid #ffbd26 * 0.8
+    background-color #ffbd26 * 1.2
+    border 1px solid #ffbd26 * 1.2
     span
       color #d02e33 * 0.8
   span
@@ -117,23 +118,25 @@
   -webkit-transform translate(-50%, -50%)
   text-align center
   &-top
-    font-weight bold
+    // font-weight bold
     padding 10px
     span
       &:nth-child(1)
         font-size 40px
-        color #000
+        color #333333
         margin 0 20px
       &:nth-child(2)
         font-size 50px
         color #f12528
   &-bottom
     padding 10px
+    font-weight bold
     span
       &:nth-child(1),&:nth-child(3)
         font-size 40px
-        color #000
+        color #333333
         font-weight bold
+        line-height 70px
       &:nth-child(2)
         font-size 68px
         color #ff4201
@@ -150,12 +153,12 @@
   -webkit-transform translate(-50%, -50%)
   text-align center
   &-top
-    font-weight bold
+    // font-weight bold
     padding 10px
     span
       &:nth-child(1)
         font-size 40px
-        color #000
+        color #333333
         margin 0 20px
       &:nth-child(2)
         font-size 50px
@@ -165,8 +168,8 @@
     span
       &:nth-child(1),&:nth-child(3)
         font-size 40px
-        color #000
-        font-weight bold
+        color #333333
+        // font-weight bold
       &:nth-child(2)
         font-size 68px
         color #ff4201

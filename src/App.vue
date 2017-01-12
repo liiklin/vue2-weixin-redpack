@@ -10,5 +10,5 @@ export default {}
 
 <style lang="stylus">
 #app
-  font-family 'Avenir', Helvetica, Arial, sans-serif
+  /*font-family 'Avenir', Helvetica, Arial, sans-serif*/
 </style>

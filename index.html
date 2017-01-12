@@ -18,6 +18,9 @@
   <script>
     $(function(){var c={},d={};var e=self.location.href.indexOf("localhost")>-1?"/api/WxPlatform/getSignature":"../../WxPlatform/getSignature";console.log(e);$.ajax({type:"POST",url:e,data:{url:self.location.href.split("#")[0]},async:false,dataType:"json",success:function(a){c=a.data}});wx.config({debug:false,appId:c.appId,timestamp:c.timestamp,nonceStr:c.noncestr,signature:c.signature,jsApiList:["onMenuShareTimeline","onMenuShareAppMessage","onMenuShareQQ","onMenuShareWeibo","onMenuShareQZone"]})});
   </script>
+  <script type="text/javascript">
+    window.alert=function(b){var a=document.createElement("IFRAME");a.style.display="none";a.setAttribute("src","data:text/plain,");document.documentElement.appendChild(a);window.frames[0].window.alert(b);a.parentNode.removeChild(a)};
+  </script>
 </head>
 
 <body ontouchstart="" onmouseover="">
