@@ -27,7 +27,7 @@ div
 		v-bind:user-info="userInfo"
 		v-bind:hasRedpack="!hasRedpack"
 		v-bind:cashNum="cashNum"
-			@click="closeRedPack"
+		@click="closeRedPack"
 		)
 		span(slot="button" @click="openRedpacket") 抢
 	Redpack(v-show="showRedPackResultGetModal"
@@ -95,7 +95,7 @@ export default {
 			},
 			userInfo: {},
 			redpacketConfig: {},
-			cashNum: '6.80',
+			cashNum: '',
 			showRedPackModal: false,
 			showRedPackResultGetModal: false,
 			showRedPackResultGotModal: false,
