@@ -173,7 +173,8 @@ export default {
 			this.showRedPackResultGotModal = false
 		},
 		share() {
-			console.log('share')
+			// console.log('share')
+			self.location = `http://weixin.7ipr.com/app/weixin/qrcode/index.html#/?id=${this.userInfo.id}`
 		}
 	},
 	computed: {},
