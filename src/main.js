@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
+import MintUI from 'mint-ui'
 import App from './App.vue'
 import store from './store'
 import router from './router'
@@ -8,6 +9,7 @@ import {
 } from 'vuex-router-sync'
 import * as filter from './filter' //自定义过滤器
 
+import 'mint-ui/lib/style.css'
 import 'vue2-animate/dist/vue2-animate.min.css' // animate
 import 'normalize.css' //重置浏览器默认样式
 import 'flex.css' //flex.css

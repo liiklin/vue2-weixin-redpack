@@ -7,6 +7,14 @@ import {
 
 Vue.use(Vuex)
 
+function creatLog(userId) {
+  return encodeURIComponent(JSON.stringify({
+    begTime: new Date().getTime(),
+    app: "weixin",
+    userId
+  }))
+}
+
 function fetch(child) {
   return new Promise((resolve, reject) => {
     Vue.http.get(API_ROOT + child).then((response) => {
@@ -34,26 +42,30 @@ function post(child, data) {
   })
 }
 
-export function fetchRedpackConfig() {
-  return fetch(`WxBus/getRedpackConfig`).then(response => {
+export function fetchRedpackConfig(wxId) {
+  let _log = creatLog(wxId)
+  return fetch(`WxBus/getRedpackConfig?_log=${_log}`).then(response => {
     return response.data
   })
 }
 
 export function fetchHasRedpack(wxId) {
-  return fetch(`WxBus/hasRedpack?wxId=${wxId}`).then(response => {
+  let _log = creatLog(wxId)
+  return fetch(`WxBus/hasRedpack?wxId=${wxId}&_log=${_log}`).then(response => {
     return response.success
   })
 }
 
 export function postRedpack(wxId) {
-  return fetch(`WxBus/getRedpack?wxId=${wxId}`).then(response => {
+  let _log = creatLog(wxId)
+  return fetch(`WxBus/getRedpack?wxId=${wxId}&_log=${_log}`).then(response => {
     return response
   })
 }
 
 export function fetchUserInfo(wxId) {
-  return fetch(`WxBus/getUserinfo?wxId=${wxId}`).then(response => {
+  let _log = creatLog(wxId)
+  return fetch(`WxBus/getUserinfo?wxId=${wxId}&_log=${_log}`).then(response => {
     return response.data.user
   })
 }

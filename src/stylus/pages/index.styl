@@ -47,26 +47,39 @@
       background-color: #f8efac
 
 #body
-  padding 50px 50px 150px
+  padding 50px
   color #777777
-  font-size 46px
+  font-size 40px
+  height 100%
   #img
     border-radius 10px
-    // height 500px
     margin 30px auto
     background-color #fff
     img
       width 100%
-      // height 500px
   #description
     margin 60px auto
-    height auto
-    line-height: 1.3
+    line-height .75rem
+    text-align center
     span
       width 900px
+    img
+      vertical-align middle
+      &.bg1
+        margin 50px 0
+        width 310px
+        height 310px
+      &.bg2
+        margin 100px 0 50px
+        width 655px
+        height 3300px
+      &.bg3
+        margin 200px 0 50px
+        width 7655px
+        height 164px
 
 #footer
-  padding 0 50px 100px 
+  padding 0 50px 100px
   img
     margin 10px auto
     width 100%
@@ -99,3 +112,11 @@
     line-height 120px
     height 120px
     width 100%
+  p
+    font-size 12px
+
+.text-center
+  text-align center
+
+.text-red
+  color #d94212

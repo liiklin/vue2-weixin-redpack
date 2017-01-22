@@ -56,3 +56,8 @@ export const wxShareConfig = ({
     })
   })
 }
+
+export const makeAuthUrl = (baseUrl) => {
+  let callBackUrl = encodeURIComponent(`http://weixin.7ipr.com/app/WxBus/auth?url=${baseUrl}`)
+  return `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx788bea80b7764d78&redirect_uri=${callBackUrl}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+}

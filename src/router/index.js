@@ -13,14 +13,14 @@ export default new Router({
     name: 'home',
     path: '/',
     meta: {
-      title: '关注公众号领红包'
+      title: '关注服务号领红包'
     },
     component: index
   }, {
     name: 'index',
     path: '/index',
     meta: {
-      title: '关注公众号领红包'
+      title: '关注服务号领红包'
     },
     component: index
   }]

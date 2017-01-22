@@ -43,8 +43,10 @@ export default {
   },
   getRedpacketConfig({
     commit
+  },{
+    wxId
   }) {
-    return api.fetchRedpackConfig()
+    return api.fetchRedpackConfig(wxId)
       .then(body => Promise.resolve(body))
       .then(redpacketConfig => {
         commit(types.SET_REDPACKET_CONFING, {
