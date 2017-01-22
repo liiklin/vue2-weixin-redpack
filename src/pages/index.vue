@@ -39,7 +39,7 @@ div
 			div
 				span 七弦琴国家平台致力于打造以知识产权服务与交易为核心，覆盖创新产业、创新产品和泛创新人群，以“让创新者先富起来”为战略使命，打造属于脑力劳动者的知识家园和收益平台。新的篇章即将奏起，我们在探索中勇往直前，独行的节拍太单调，七弦琴邀您一起出发。
 	#footer
-		img(src="~assets/detail-footer.png")
+		img(src="~assets/detail-footer.jpg")
 	#fixed-bottom
 		.button(@click="doGetRedpacket")
 			span 一起去抢
