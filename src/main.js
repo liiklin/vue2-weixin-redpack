@@ -19,8 +19,8 @@ sync(store, router)
 
 Vue.use(VueResource)
 
-const FastClick = require('fastclick')
-FastClick.attach(document.body)
+// const FastClick = require('fastclick')
+// FastClick.attach(document.body)
 
 /**
  * 兼容微信设置页面的title

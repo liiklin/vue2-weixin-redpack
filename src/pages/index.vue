@@ -41,31 +41,38 @@ div
 	#footer
 		img(src="~assets/detail-footer.jpg")
 	#fixed-bottom
-		.button(@click="doGetRedpacket")
-			span 一起去抢
+		.button(@click.capture="doGetRedpacket")
+			span 一起抢
+	//-未获得红包
 	Modal(v-show="showRedPackModal"
 		v-bind:user-info="userInfo"
 		v-bind:hasRedpack="!hasRedpack"
 		v-bind:cashNum="cashNum"
+		v-bind:redpacketConfig="redpacketConfig"
 		@click="closeRedPack"
 		)
 		span(slot="button" @click="openRedpacket") 抢
+	//-获得红包
 	Redpack(v-show="showRedPackResultGetModal"
 		v-bind:user-info="userInfo"
-		v-bind:hasRedpack="!hasRedpack"
+		v-bind:hasRedpack="hasRedpack"
 		v-bind:cashNum="cashNum"
-		v-bind:robbed="false"
+		v-bind:robbed="'1002'"
+		v-bind:redpacketConfig="redpacketConfig"
 		@click="closeRedPackGetResult"
 		)
 		span(slot="share" @click="share") 邀请好友一起抢
+	//-已经获得红包
 	Redpack(v-show="showRedPackResultGotModal"
 		v-bind:user-info="userInfo"
 		v-bind:hasRedpack="hasRedpack"
 		v-bind:cashNum="cashNum"
 		v-bind:robbed="robbed"
+		v-bind:redpacketConfig="redpacketConfig"
 		@click="closeRedPackGotResult"
 		)
 		span(slot="share" @click="share") 邀请好友一起抢
+	//-分享按钮
 	ShareModal(v-show="showShare"
 		@click="showShare = false"
 		)
@@ -123,8 +130,8 @@ export default {
 			article: {
 				title: "关注七弦琴服务号 - 领取现金红包",
 				created: "2017-01-26",
-				menu: "灵通琴",
-				wxmp: "七弦琴资讯",
+				menu: "",
+				wxmp: "七弦琴",
 				num: 30,
 				content: "文章正文",
 				img: "~assets/bg.png",
@@ -137,7 +144,7 @@ export default {
 			showRedPackResultGotModal: false,
 			status: 0,
 			hasRedpack: false,
-			robbed: false, //抢光红包
+			robbed: '', //红包状态
 			canLoad: true,
 			showShare: false
 		}
@@ -155,43 +162,95 @@ export default {
 	},
 	methods: {
 		async openRedpacket() {
-				let self = this,
-					wxId = self.userInfo.id
+			let self = this,
+				wxId = self.userInfo.id
 
-				if (!self.canLoad) {
-					return
-				}
-				self.canLoad = false
-				Indicator.open('正在抢红包...')
-				try {
-					await self.$store.dispatch('getRedpacket', {
-						wxId
-					})
-					let result = self.$store.getters.getRedpacket,
-						status = result.success
-					if (status) { // 获得红包
-						Indicator.close()
-						self.cashNum = Number(result.data.total_amount).toFixed(2)
-						self.hasRedpack = true
-						self.closeRedPack()
-						self.showRedPackResultGet()
-					} else { // 抛出异常
-						Indicator.close()
-						self.canLoad = true
-						MessageBox('提示', `${result.data.return_msg || result.msg}`)
-					}
-				} catch (e) {
-					Indicator.close()
+			console.log(`self.canLoad==>${self.canLoad}`)
+			if (!self.canLoad) { //防止重复提交
+				return
+			}
+			self.canLoad = false
+			Indicator.open('正在抢红包...')
+			try {
+				await self.$store.dispatch('getRedpacket', {
+					wxId
+				})
+				// console.log(`hasRedpack==>${self.hasRedpack}`)
+				let result = self.$store.getters.getRedpacket,
+				// let result = {
+				// 		"success": true,
+				// 		"msg": "1002",
+				// 		"data": {
+				// 			"result_code": "SUCCESS",
+				// 			"total_amount": 1.07,
+				// 			"mch_id": "1325285501",
+				// 			"err_code": "SUCCESS",
+				// 			"mch_billno": "1325285501201701251815003114",
+				// 			"send_listid": "1000041701201701253000112625272",
+				// 			"wxappid": "wx788bea80b7764d78",
+				// 			"return_msg": "发放成功",
+				// 			"err_code_des": "发放成功",
+				// 			"re_openid": "ot5hAwk0kFP5vdbo1QVYVr_YeMjE",
+				// 			"return_code": "SUCCESS"
+				// 		},
+				// 		"rowcount": 0
+				// 	},
+					status = result.success,
+					code = result.msg
+
+				self.robbed = code
+				Indicator.close()
+					// code = '1008' //调试
+				if (code == '1002') { // 获得红包
+					console.log(`获得红包`)
+					self.cashNum = Number(result.data.total_amount).toFixed(2)
+					self.closeRedPack()
+					self.showRedPackResultGet()
+				} else if (code == '1001') { // 已经抢过
+					self.closeRedPack()
+					self.showRedPackResultGot()
+						// MessageBox('提示', `${result.data.return_msg || result.msg}`)
+				} else if (code == '1007') {
 					self.canLoad = true
-					console.error(`e=>>${e}`)
-					MessageBox('提示', '网络似乎有点问题，请重新再试。')
+						// self.closeRedPack()
+					MessageBox('提示', `${result.data.return_msg || result.msg}`)
+				} else {
+					self.closeRedPack()
+					self.showRedPackResultGot()
 				}
+			} catch (e) {
+				Indicator.close()
+				self.canLoad = true
+				console.error(`e=>>${e}`)
+				MessageBox('提示', '网络似乎有点问题，请重新再试。')
+			}
 		},
-		doGetRedpacket() {
-			if (this.hasRedpack) {
-				this.showRedPackResultGot()
-			} else {
-				this.showRedPack()
+		async doGetRedpacket() {
+			Indicator.open('加载中...')
+			let self = this
+			try {
+				await fetchHasRepack(self.$store, self.userInfo.id)
+					self.robbed = self.$store.getters.getHasRedpack
+				// self.robbed = '' //调试
+				Indicator.close()
+				if (self.robbed == '1007') { //异常
+					MessageBox('提示', '获取红包失败，请重试。')
+					return
+				} else if (self.robbed == '') { //可以抢红包
+					self.hasRedpack = false
+				} else { //已经抢
+					self.hasRedpack = true
+				}
+				// console.log(`doGetRedpacket==>${self.hasRedpack}`)
+				if (self.hasRedpack) {
+					self.showRedPackResultGot()
+				} else {
+					self.showRedPack()
+				}
+			} catch (e) {
+				Indicator.close()
+				console.error(`e=>>${e}`)
+				MessageBox('提示', '网络似乎有点问题，请重新再试。')
 			}
 		},
 		showRedPack() {
@@ -223,32 +282,33 @@ export default {
 	computed: {},
 	async mounted() {},
 	async beforeMount() {
-		Indicator.open('加载中...')
+		// Indicator.open('加载中...')
 		let self = this,
 			search = queryString.parse(location.search),
 			wxId = self.$route.query.id || search.id,
 			paperId = self.$route.query.paperId
 
+		// await Promise.all([fetchUserInfo(self.$store, wxId), fetchRepackConfig(self.$store, wxId)])
 		await fetchUserInfo(self.$store, wxId)
-		await fetchHasRepack(self.$store, wxId)
 		await fetchRepackConfig(self.$store, wxId)
 
-		self.hasRedpack = self.$store.getters.getHasRedpack
+		// console.log(self.$store.getters.getUserInfo)
 		self.userInfo = self.$store.getters.getUserInfo
 		self.redpacketConfig = self.$store.getters.getRedpackConfig
 		let title = `${self.userInfo.name}邀请您一起抢红包`,
-			desc = '七弦琴国家知识产权平台祝您身体健康，阖家幸福，前程似锦！大年三十到元宵节，记得呼朋唤友一起来抢哦。',
+			// desc = '七弦琴国家知识产权平台祝您身体健康，阖家幸福！大年三十到元宵节，记得呼朋唤友一起来抢哦。',
+			desc = '七弦琴祝您身体健康，阖家幸福！大年三十到元宵节，17场红包雨，记得呼朋唤友一起来抢哦...',
 			// link = makeAuthUrl('weixin/redpack/index.html#/'),
-			link = `.7ipr.com/app/weixin/qrcode/index.html#/?id=${self.userInfo.id}`,
+			link = `weixin.7ipr.com/app/weixin/qrcode/index.html#/?id=${self.userInfo.id}`,
 			imgUrl = 'http://weixin.7ipr.com/app/weixin/static/shareRedpack.jpg'
 		wxShareConfig({
-			title,
-			desc,
-			link,
-			imgUrl
-		})
-		//移除loading
-		Indicator.close()
+				title,
+				desc,
+				link,
+				imgUrl
+			})
+			//移除loading
+			// Indicator.close()
 	}
 }
 </script>

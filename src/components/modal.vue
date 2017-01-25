@@ -5,10 +5,9 @@ transition(name="modal")
 			.modal-container
 				.modal-close(@click="handleClick")
 					i.iconfont.icon-guanbi
-						//-slot(name="close") &nbsp;
 				.modal-content
 					.content-bg
-						img(src="~assets/redpack011.png")
+						img(src="~assets/redpack01.png")
 					.user-icon
 						img(:src="userInfo.wxPhoto")
 					.button-circle

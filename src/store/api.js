@@ -52,7 +52,7 @@ export function fetchRedpackConfig(wxId) {
 export function fetchHasRedpack(wxId) {
   let _log = creatLog(wxId)
   return fetch(`WxBus/hasRedpack?wxId=${wxId}&_log=${_log}`).then(response => {
-    return response.success
+    return response.msg
   })
 }
 
